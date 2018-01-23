@@ -1,4 +1,4 @@
-# Certified-Smart-Contract-Developer
+# Certified Smart Contract Developer
 
 This code base is a part of the code templates of different modules in the e-learning course Certified Smart Contract Developer: made to learn how to code Ethereum Smart Contracts over Solidity, hosted at Tosh Academy.
 
