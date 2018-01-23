@@ -1,6 +1,6 @@
-# Certified Soldity Developer - Course Resources
+# Certified-Smart-Contract-Developer
 
-This code base is a part of the code templates of different modules in the e-learning course [Learn Solidity: Programing Language for Ethereum Smart Contracts](https://www.toshacademy.com/courses/best-solidity-programing-language-tutorial-for-ethereum-smart-contracts?utm_source=github&utm_medium=voting-ballot-repo) hosted at [Tosh Academy](https://www.toshacademy.com/collections/blockchain?utm_source=github&utm_medium=voting-ballot-repo). 
+This code base is a part of the code templates of different modules in the e-learning course Certified Smart Contract Developer: made to learn how to code Ethereum Smart Contracts over Solidity, hosted at Tosh Academy.
 
 Learn to build smart contracts using Solidity.
 
