@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 /**
  * Sellable contract should be inherited by any other contract that
  * wants to provide a mechanism for selling its ownership to another account
@@ -24,21 +24,21 @@ contract Sellable {
     
     // Makes functions require the called to be the owner of the contract
     modifier onlyOwner {
-        require(msg.sender == owner);
+        require(msg.sender == owner, "Sender is not owner");
         _;
     }
     
     // Add to functions that the owner wants to prevent being called while the
     // contract is for sale.
     modifier ifNotLocked {
-        require(!selling);
+        require(!selling, "Contract is already on sale");
         _;
     }
     
     event Transfer(uint _saleDate, address _from, address _to, uint _salePrice);
-    function Sellable() public{
+    constructor() public{
         owner = msg.sender;
-        Transfer(now,address(0),owner,0);
+        emit Transfer(now,address(0),owner,0);
     }
     
     /**
@@ -48,9 +48,9 @@ contract Sellable {
      * @param _to (OPTIONAL) is the address of the person that the owner
      * wants to sell the contract to. If set to 0x0, anyone can buy it.
      */
-    function initiateSale(uint _price, address _to) onlyOwner public{
-        require(_to != address(this) && _to != owner);
-        require(!selling);
+    function initiateSale(uint _price, address _to) public onlyOwner {
+        require(_to != address(this) && _to != owner, "cannot sell to contract itself or owner");
+        require(!selling,"Contract is already on sale");
         
         selling = true;
         
@@ -64,8 +64,8 @@ contract Sellable {
      * cancelSale allows the owner to cancel the sale before someone buys
      * the contract.
      */
-    function cancelSale() onlyOwner public{
-        require(selling);
+    function cancelSale() public onlyOwner {
+        require(selling, "Contract is not on sale");
         
         // Reset sale variables
         resetSale();
@@ -77,10 +77,10 @@ contract Sellable {
      * Value sent must match the asking price.
      */
     function completeSale(uint valued) public payable{
-        require(selling);
-        require(msg.sender != owner);
-        require(msg.sender == sellingTo || sellingTo == address(0));
-        require(valued == askingPrice);
+        require(selling,"Contract is not on sale");
+        require(msg.sender != owner, "owner cannot buy contract");
+        require(msg.sender == sellingTo || sellingTo == address(0), "buyer not authorised");
+        require(valued == askingPrice, "price not matched");
         // Swap ownership
         address prevOwner = owner;
         address newOwner = msg.sender;
@@ -91,7 +91,7 @@ contract Sellable {
         // Transaction cleanup
        
         
-        Transfer(now,prevOwner,newOwner,salePrice);
+        emit Transfer(now,prevOwner,newOwner,salePrice);
         resetSale();
     }
     

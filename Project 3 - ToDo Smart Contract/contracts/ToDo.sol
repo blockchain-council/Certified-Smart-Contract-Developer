@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 
 contract ToDo {
@@ -12,19 +12,19 @@ contract ToDo {
     uint[] private ids;
 
     function getTaskCount() //function for getting all the task counts.
-            constant public
+            public view
             returns (uint length) {
         return ids.length;    
     }
 
     function getTaskIdAt(uint index) //function for getting the task id.
-            constant public
+            public view
             returns (uint id) {
         return ids[index];
     }
 
     function getTask(uint id) //function for getting the task deatail by supplying the task id.
-            constant public
+            public view
             returns (string task, string time) {
         Routine storage routine = routines[id];
         return (
@@ -40,7 +40,7 @@ contract ToDo {
             time: time
         });
         ids.push(id);
-        LogTaskAdded(id, task, time);
+        emit LogTaskAdded(id, task, time);
         return true;
     }
 
